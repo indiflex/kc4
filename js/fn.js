@@ -92,3 +92,7 @@ const unary = fn => fn.length === 1
 
 const rets2 = arr.map(unary(parseInt));
 console.log(rets2);   // [ 1, 2, 3 ]
+
+const aa = [1, 2];
+const bb = aa.concat(5, 6, [7, 8]);
+const cc = aa.concat([5, 6, [7, 8]]);
