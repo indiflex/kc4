@@ -1,9 +1,11 @@
 const assert = require('assert');
+const { isProxy } = require('util/types');
 
 class Emp {
   firstName;
   lastName;
   constructor() {
+    console.log('this>>', Object.getPrototypeOf(this));
     return new Proxy(this, {
       get(target, prop) {
         if (prop === 'fullName')
@@ -22,6 +24,17 @@ class Emp {
 }
 
 const hang = new Emp();
+console.log(
+  'hang>>',
+  hang,
+  Object.getPrototypeOf(hang),
+  hang.__proto__,
+  Proxy.prototype,
+  Emp.prototype,
+  hang instanceof Emp,
+  isProxy(hang),
+  hang.constructor.name
+);
 hang.fullName = 'Kildong Hong'; // split하여 firstName, lastName 셋
 // console.log('fn=', hang.fullName); // 'Kildong HONG' 출력하면 통과!
 // console.log('f,l=', hang.firstName, hang.lastName); // 'Kildong HONG' 출력하면 통과!
@@ -102,3 +115,51 @@ assert.deepStrictEqual(users.firstObject, kim);
 users.lastObject = hong;
 // console.log('🚀  users:', users);
 assert.deepStrictEqual(users.lastObject, hong);
+
+// -----------------------------
+console.log('========================');
+
+const origin = {};
+const handler = {
+  set: function (target, prop, value) {
+    if (typeof value === 'number') {
+      target[prop] = value * 2;
+    } else {
+      console.log('args>>', prop, value);
+      // Reflect.set(...arguments);
+      target[prop] = value;
+    }
+  },
+  get: function (target, prop) {
+    console.log('>>', prop, target[prop], typeof target[prop]);
+    if (typeof target[prop] === 'object') {
+      return new Proxy(target[prop], handler);
+    }
+    return target[prop];
+    // return Reflect.get(...arguments);
+  },
+};
+const proxy = new Proxy(origin, handler);
+console.log('🚀  proxy---->>', proxy.constructor.name);
+proxy.a = 20;
+proxy.b = {};
+console.log('proxy.a>>>', proxy.a); // 20
+console.log('proxy.b>>>', proxy.b); // {}
+console.log(':>>', isProxy(proxy));
+console.log(':>>', isProxy(proxy.a));
+console.log(':>>', isProxy(proxy.b));
+
+proxy.b.c = 20;
+console.log(proxy.b.c); // 20? 40?
+
+function f() {
+  obj = new Object({});
+  Object.defineProperty(obj, 'a', { value: 99 });
+  return obj;
+}
+
+console.log('--------------------------');
+const ff = new f();
+console.log('🚀  ff:', ff);
+ff.a = 9;
+console.log('🚀  ff:', ff.constructor.name, ff.a);
