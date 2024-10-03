@@ -35,6 +35,12 @@ class Collection {
     return this.#arr.shift();
   }
 
+  *[Symbol.iterator]() {
+    for (let i = 0; i < this.#arr.length; i += 1) {
+      yield this.#arr[i];
+    }
+  }
+
   toString() {
     return JSON.stringify(this.#arr);
   }
@@ -110,6 +116,8 @@ console.log('q1.peek>>', q1.peek);
 const arrx = q1.toArray();
 arrx[1] = 'xxxxxxxxx';
 q1.print();
+
+console.log('iter>>', [...stack3], [...q1]);
 
 class X extends Array {}
 class Animal {}
