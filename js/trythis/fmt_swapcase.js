@@ -38,5 +38,5 @@ assert.equal(
   swapCase('Senior Coding Learning JS'),
   'sENIOR cODING lEARNING js'
 );
-assert.equal(swapCase('Hanaro 4 Class'), 'hANARO 4 cLASS');
+assert.equal(swapCase('Kumchun Campus'), 'kUMCHUN cAMPUS');
 assert.equal(swapCase('HeLLo WoRLd'), 'hEllO wOrlD');
