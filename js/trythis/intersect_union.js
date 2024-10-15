@@ -1,4 +1,4 @@
-const assert = require('assert');
+import assert from 'assert';
 
 const A = [1, 2, 3, 4, 5, 3];
 const B = [1, 22, 3, 44, 5];

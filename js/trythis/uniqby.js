@@ -1,4 +1,4 @@
-const assert = require('assert');
+import assert from 'assert';
 
 Array.prototype.uniqBy = function (prop) {
   return [...new Set(this.map(a => a[prop]))];

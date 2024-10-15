@@ -1,4 +1,4 @@
-const assert = require('assert');
+import assert from 'assert';
 const telfmt = str => {
   const len = str.length;
   if (len < 7) return str;

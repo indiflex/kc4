@@ -1,5 +1,6 @@
-const assert = require('assert');
-const { isProxy } = require('util/types');
+import assert from 'assert';
+import '../utils/array-utils.js';
+// import { isProxy } from 'util/types';
 
 class Emp {
   firstName;
@@ -13,11 +14,13 @@ class Emp {
         return target[prop];
       },
       set(target, prop, value) {
+        console.log('sssssssssssss>>', target, prop, value);
         if (prop === 'fullName')
           [target.firstName, target.lastName] = value.includes(' ')
             ? value.split(' ')
             : [target.firstName, value];
         else target[prop] = value;
+        return true;
       },
     });
   }
@@ -32,10 +35,11 @@ console.log(
   Proxy.prototype,
   Emp.prototype,
   hang instanceof Emp,
-  isProxy(hang),
+  // isProxy(hang),
   hang.constructor.name
 );
-hang.fullName = 'Kildong Hong'; // split하여 firstName, lastName 셋
+
+hang.fullName = 'Kildong Hong';
 // console.log('fn=', hang.fullName); // 'Kildong HONG' 출력하면 통과!
 // console.log('f,l=', hang.firstName, hang.lastName); // 'Kildong HONG' 출력하면 통과!
 hang.fullName = 'Lee';
@@ -49,51 +53,6 @@ const hong = { id: 1, name: 'Hing' };
 const kim = { id: 2, name: 'Kim' };
 const lee = { id: 3, name: 'Lee' };
 const users = [hong, lee, kim];
-
-Object.defineProperties(Array.prototype, {
-  firstObject: {
-    get() {
-      return this[0];
-    },
-    set(val) {
-      this[0] = val;
-    },
-  },
-  lastObject: {
-    get() {
-      return this.at(-1);
-    },
-    set(val) {
-      // this.with(-1, val); // pure function!
-      this[this.length - 1] = val;
-    },
-  },
-});
-
-Array.prototype.mapBy = function (prop) {
-  return this.map(a => a[prop]);
-};
-
-Array.prototype.filterBy = function (key, val, isInclude = false) {
-  return this.filter(a => (isInclude ? a[key]?.includes(val) : a[key] === val));
-};
-
-Array.prototype.rejectBy = function (key, val, isInclude = false) {
-  return this.filter(a =>
-    isInclude ? !a[key]?.includes(val) : a[key] !== val
-  );
-};
-
-Array.prototype.findBy = function (key, val) {
-  return this.find(a => a[key] === val);
-};
-
-Array.prototype.sortBy = function (condition) {
-  const [prop, direction = 'asc'] = condition.split(':');
-  const dir = direction === 'desc' ? -1 : 1;
-
-  return this.sort((a, b) => (a[prop] > b[prop] ? dir : -dir));
-};
 
 const arr = [1, 2, 3, 4, 5];
 assert.deepStrictEqual([arr.firstObject, arr.lastObject], [1, 5]);
@@ -129,6 +88,7 @@ const handler = {
       // Reflect.set(...arguments);
       target[prop] = value;
     }
+    return true;
   },
   get: function (target, prop) {
     console.log('>>', prop, target[prop], typeof target[prop]);
@@ -145,16 +105,16 @@ proxy.a = 20;
 proxy.b = {};
 console.log('proxy.a>>>', proxy.a); // 20
 console.log('proxy.b>>>', proxy.b); // {}
-console.log(':>>', isProxy(proxy));
-console.log(':>>', isProxy(proxy.a));
-console.log(':>>', isProxy(proxy.b));
+// console.log(':>>', isProxy(proxy));
+// console.log(':>>', isProxy(proxy.a));
+// console.log(':>>', isProxy(proxy.b));
 
 proxy.b.c = 20;
 console.log(proxy.b.c); // 20? 40?
 
 function f() {
-  obj = new Object({});
-  Object.defineProperty(obj, 'a', { value: 99 });
+  let obj = new Object({});
+  Object.defineProperty(obj, 'a', { value: 99, writable: true });
   return obj;
 }
 

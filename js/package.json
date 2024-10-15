@@ -1,11 +1,12 @@
 {
-  "name": "js",
-  "version": "1.0.0",
+  "name": "indiflexjs",
+  "version": "1.1.1",
   "description": "",
   "main": "class_method.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",

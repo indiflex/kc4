@@ -1,5 +1,5 @@
-const readline = require('readline');
-const { stdin: input, stdout: output } = require('process');
+import readline from 'readline';
+import { stdin as input, stdout as output } from 'process';
 
 const rl = readline.createInterface({ input });
 

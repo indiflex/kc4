@@ -1,4 +1,4 @@
-const assert = require('assert');
+import assert from 'assert';
 
 const ㄱ = 'ㄱ'.charCodeAt();
 const ㅎ = 'ㅎ'.charCodeAt();
