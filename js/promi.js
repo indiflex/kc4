@@ -118,7 +118,7 @@ async function p4() {
 
 const afterTime = sec =>
   new Promise(resolve => {
-    setTimeout(resolve, sec * 1000, sec);
+    setTimeout(resolve, sec * 100, sec);
   });
 
 function p5() {
@@ -130,4 +130,39 @@ function p5() {
   console.log('mapResult=', mapResult);
 }
 
-p5();
+// p5();
+
+const oddNums = [1, 2, 3].filter(async a => {
+  const r = await afterTime(a);
+  return r % 2 === 1;
+});
+console.log('🚀  oddNums:', oddNums);
+
+const ps = [1, 2, 3].map(afterTime);
+const ps2 = (await Promise.all(ps)).filter(a => a % 2 === 1);
+console.log('🚀  ps2:', ps2);
+
+(async function () {
+  const r = await afterTime(1);
+  console.log('🚀  r:', r);
+})();
+
+async function p7() {
+  console.log('11111111111');
+  await new Promise(resolve => {
+    setTimeout(resolve, 2000);
+  });
+  console.log('22222222222222');
+}
+
+const px1 = await Promise.all([1, 2, 3].map(afterTime));
+console.log('🚀  px1:', px1);
+
+for (const x of [1, 2, 3].map(afterTime)) {
+  const r = await x;
+  console.log('🚀  r:', r);
+}
+
+for await (const r of [1, 2, 3].map(afterTime)) {
+  console.log('🚀  r:', r);
+}
