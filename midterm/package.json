@@ -1,0 +1,19 @@
+{
+  "name": "midterm",
+  "version": "1.0.0",
+  "description": "중간 평가 과제",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "JS",
+    "TS"
+  ],
+  "author": "indiflex",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.5.4"
+  }
+}
