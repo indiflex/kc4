@@ -82,10 +82,88 @@ if ('x' in ccc) console.log('🚀  ccc:', ccc.x);
 
 // customer = ccc; //error
 
-customer = { name: '홍길동', age: 33, xxx: 12 };
+// customer = { name: '홍길동', age: 33, xxx: 12 }; // xxx not exists
+customer = { name: '홍길동', age: 33 };
 let ddd = { name: '홍길동', age: 33, xxx: 12 };
 customer = ddd;
 console.log('🚀  customer:', customer);
 
 // let m: Member = { name: 'Hong', addr: 'Seoul' };
 // console.log('🚀  m:', m.discountRate);
+
+const songs = ['One More Time', 'I AM', 'Cry'];
+
+// song : string
+// index : number
+
+songs.forEach((song, index) => {
+  console.log(`${song} is at index ${index}`);
+});
+
+function forEach(arr: string[], cb: (a: string | number, i: number) => void) {
+  for (let i = 0; i < arr.length; i++) {
+    cb(arr[i], i);
+  }
+}
+
+forEach(songs, (a: string | number | boolean) => {
+  console.log(`${a}`);
+});
+
+const oneToTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+console.log(oneToTen[400]?.toFixed(2));
+
+// const nums: number[] = [];
+
+interface ID {
+  id: number;
+}
+
+interface User extends ID {
+  name: string;
+  getName: () => string;
+}
+
+class Vip implements User {
+  id;
+  name;
+  constructor(id: number, name: string) {
+    this.id = id;
+    this.name = name;
+  }
+  getName() {
+    return this.name;
+  }
+}
+
+class Vvip extends Vip {
+  // asdfsaf
+}
+
+const xuser: User = new Vip(1, 'Park');
+
+const kim: User = {
+  id: 1,
+  name: 'Hong',
+  getName() {
+    return this.name;
+  },
+};
+
+const hong: Emp = { id: 1, ename: 'Hong' };
+type Emp = {
+  ename: string;
+} & ID;
+
+class Boss implements Emp {
+  id;
+  ename;
+  constructor(id: number, name: string) {
+    this.id = id;
+    this.ename = name;
+  }
+  getName() {
+    return this.ename;
+  }
+}
