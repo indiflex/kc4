@@ -1,3 +1,4 @@
+// arr.sortBy('id:desc,name:asc')
 Array.prototype.sortBy = function (sortProp = '') {
   const sortProps = sortProp.split(',');
   // console.log('🚀  sortProps:', sortProps);

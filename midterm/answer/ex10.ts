@@ -1,5 +1,5 @@
 class Collection<T> {
-  protected arr = Array<T>();
+  protected arr = Array<T>(); // T[]
 
   constructor(...args: T[]) {
     this.arr.push(...args);

@@ -1,9 +1,10 @@
-// dummy(mock)입니다. 올바르게 수정하세요.
+// T extends Function
+// T extends (...args: any []) => void
 export function debounce<T extends unknown[]>(
   cb: (...args: T) => void,
   delay: number
 ) {
-  let timer: ReturnType<typeof setTimeout>;
+  let timer: ReturnType<typeof setTimeout> | null = null;
   return (...args: T) => {
     if (timer) clearTimeout(timer);
     timer = setTimeout(cb, delay, ...args);

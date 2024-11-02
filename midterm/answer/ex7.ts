@@ -19,6 +19,11 @@ const getComments = (postId: number) =>
     res.json().then(res => res as Comment[])
   );
 
+// cf.
+const myFetch = async <T>(url: string) => {
+  return fetch(url).then(res => res.json()) as T;
+};
+
 export async function getPosts(userId: number | string) {
   const res = await fetch(`${POST_URL}?userId=${userId}`);
 

@@ -1,6 +1,7 @@
 const ㄱㄴㄷ = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
 const 가나다 = '가까나다따라마바빠사싸아자짜차카타파하';
 
+// ㄱ1ㄷ ==> "/[ㄱ가-깋][1][ㄷ다-딯]/"
 module.exports = {
   searchByKoreanInitialSound: (data, firstSounds) => {
     const r = [...firstSounds].map(a => {
