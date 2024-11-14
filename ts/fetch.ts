@@ -13,8 +13,10 @@ export async function fetchUsers() {
 }
 
 export async function saveUser(user: User) {
-  const newer = await fetch(BASE_URL, {
-    method: user.id === 0 ? 'POST' : 'PATCH',
+  const isAdding = user.id === 0;
+  const url = isAdding ? BASE_URL : `${BASE_URL}/${user.id}`;
+  const newer = await fetch(url, {
+    method: isAdding ? 'POST' : 'PATCH',
     headers: {
       'Content-Type': 'application/json',
     },

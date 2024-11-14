@@ -38,6 +38,19 @@ app.get('/users', (req, res) => {
   res.send(users);
 });
 
+app.patch('/users/:id', (req, res) => {
+  const { id: userid } = req.params;
+  const { email, name } = req.body;
+  const user = users.find(({ id }) => id === +userid);
+  if (!user) {
+    return res.status(404).send({ message: 'Not Found User' });
+  }
+
+  user.email = email;
+  user.name = name;
+  res.send(user);
+});
+
 app.delete('/users/:id', (req, res) => {
   const { id } = req.params;
   users = [...users.filter(user => user.id !== +id)];
