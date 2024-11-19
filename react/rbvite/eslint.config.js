@@ -26,7 +26,6 @@ export default tseslint.config(
       react: { version: '18.3' }, // React version for react plugin
     },
     rules: {
-      ...js.configs.recommended.rules, // ESLint rules
       ...react.configs.recommended.rules, // React rules
       ...react.configs['jsx-runtime'].rules,
       ...reactHooks.configs.recommended.rules,

@@ -1,17 +1,23 @@
 import { ReactNode } from 'react';
 
 type Props = {
-  onClick: () => void;
-  className: string;
+  type?: 'submit' | 'reset' | 'button' | undefined;
+  onClick?: () => void;
+  className?: string;
   children: ReactNode;
 };
 export default function Button({
+  type,
   children,
   onClick = () => {},
   className = '',
 }: Props) {
   return (
-    <button onClick={onClick} className={`btn ${className}`}>
+    <button
+      type={type}
+      onClick={onClick}
+      className={`btn ${className} flex items-center justify-center`}
+    >
       {children}
     </button>
   );

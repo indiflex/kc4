@@ -1,5 +1,5 @@
 type Props = {
-  name: string;
+  name: string | undefined;
   age: number;
   plusCount: () => void;
 };

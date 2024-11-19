@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import './App.css';
-import Hello from './components/Hello';
 import My from './components/My';
 import Button from './components/ui/Button';
+import Login from './components/Login';
 
 const SampleSession = {
-  loginUser: { id: 1, name: 'Hong' },
+  // loginUser: { id: 1, name: 'Hong' },
+  loginUser: null,
   cart: [
     { id: 100, name: '라면', price: 3000 },
     { id: 101, name: '컵라면', price: 2000 },
@@ -13,7 +14,7 @@ const SampleSession = {
   ],
 };
 
-type LoginUser = {
+export type LoginUser = {
   id: number;
   name: string;
 };
@@ -37,12 +38,32 @@ function App() {
     setCount(count + 1);
   };
 
+  const login = ({ id, name }: LoginUser) => {
+    setSession({ ...session, loginUser: { id, name } });
+  };
+
   const logout = () => setSession({ ...session, loginUser: null });
+
+  const removeCartItem = (itemid: number) => {
+    setSession({
+      ...session,
+      cart: session.cart.filter(({ id }) => id !== itemid),
+    });
+  };
 
   return (
     <>
-      <Hello name='Jade' age={33} plusCount={plusCount} />
-      <My session={session} logout={logout} />
+      {session.loginUser?.id ? (
+        <My
+          session={session}
+          logout={logout}
+          removeCartItem={removeCartItem}
+          plusCount={plusCount}
+        />
+      ) : (
+        <Login login={login} />
+      )}
+
       <div className='card'>
         <Button
           onClick={() => setCount((count) => count + 1)}
