@@ -57,6 +57,25 @@ app.delete('/users/:id', (req, res) => {
   res.send({ message: 'OK' });
 });
 
+app.get('/actuator', (req, res) => {
+  res.send({
+    _links: {
+      self: {
+        href: 'http://localhost:8080/actuator',
+        templated: false,
+      },
+      'health-path': {
+        href: 'http://localhost:8080/actuator/health/{*path}',
+        templated: true,
+      },
+      health: {
+        href: 'http://localhost:8080/actuator/health',
+        templated: false,
+      },
+    },
+  });
+});
+
 const PORT = 7009;
 app.listen(PORT, () => {
   console.log(`Server's started on ${PORT}...`);

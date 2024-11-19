@@ -1,6 +1,6 @@
 {
   "name": "indiflexjs",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "",
   "main": "class_method.js",
   "scripts": {
@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "korean": "^0.1.1",
     "moment": "^2.30.1"
   }
 }

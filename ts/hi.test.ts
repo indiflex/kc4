@@ -1,4 +1,4 @@
-import { getScore, isValid } from './hi';
+import { getScore, isValid, myAdd } from './hi';
 // const { getScore } = require('./hi');
 
 // const ret = getScore('영');
@@ -19,6 +19,12 @@ describe('-hi-', () => {
       expect(isValid()).not.toBe(false);
       expect(isValid()).toBeTruthy();
       // expect(isValid()).toBeFalsy();
+    });
+  });
+
+  describe.only('myAdd', () => {
+    test('add', () => {
+      expect(myAdd(5, 10)).toBe(15);
     });
   });
 });
