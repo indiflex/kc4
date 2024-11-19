@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import Hello from './components/Hello';
 import My from './components/My';
+import Button from './components/ui/Button';
 
 const SampleSession = {
   loginUser: { id: 1, name: 'Hong' },
@@ -43,9 +44,12 @@ function App() {
       <Hello name='Jade' age={33} plusCount={plusCount} />
       <My session={session} logout={logout} />
       <div className='card'>
-        <button onClick={() => setCount((count) => count + 1)}>
+        <Button
+          onClick={() => setCount((count) => count + 1)}
+          className='btn-primary'
+        >
           count is {count}
-        </button>
+        </Button>
       </div>
     </>
   );
