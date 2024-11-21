@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import Button from './ui/Button';
 import Input from './ui/Input';
 import { LoginUser } from '../App';
@@ -8,29 +8,28 @@ type Props = {
 };
 
 export default function Login({ login }: Props) {
-  const [id, setId] = useState(0);
+  const idRef = useRef<HTMLInputElement>(null);
   const [name, setName] = useState('');
-
-  console.log('******', id, name);
-
-  const changeId = (e: ChangeEvent<HTMLInputElement>) => {
-    setId(+e.currentTarget.value);
-  };
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!id || !name) {
+    const id = Number(idRef.current?.value);
+    if (!id || isNaN(id) || !name) {
       return alert('Input the id and name, plz..');
     }
     login({ id, name });
   };
+
+  useEffect(() => {
+    idRef.current?.focus();
+  }, []);
 
   return (
     <>
       <form onSubmit={submitHandler} className='flex gap-2 border p-3'>
         <div>
           <label htmlFor='loginId'>ID:</label>
-          <Input type='number' id='loginId' onChange={changeId} value={id} />
+          <input type='number' id='loginId' ref={idRef} />
         </div>
 
         <div>

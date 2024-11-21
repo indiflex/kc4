@@ -5,8 +5,8 @@ import Button from './components/ui/Button';
 import Login from './components/Login';
 
 const SampleSession = {
-  // loginUser: { id: 1, name: 'Hong' },
-  loginUser: null,
+  loginUser: { id: 1, name: 'Hong' },
+  // loginUser: null,
   cart: [
     { id: 100, name: '라면', price: 3000 },
     { id: 101, name: '컵라면', price: 2000 },
@@ -19,7 +19,7 @@ export type LoginUser = {
   name: string;
 };
 
-type CartItem = {
+export type CartItem = {
   id: number;
   name: string;
   price: number;
@@ -44,6 +44,23 @@ function App() {
 
   const logout = () => setSession({ ...session, loginUser: null });
 
+  const saveCartItem = (cartItem: CartItem) => {
+    const isAdding = !cartItem.id;
+    if (isAdding) {
+      cartItem.id = Math.max(...session.cart.map(({ id }) => id)) + 1;
+      setSession({ ...session, cart: [...session.cart, cartItem] });
+    } else {
+      setSession({
+        ...session,
+        cart: [
+          ...session.cart.map((item) =>
+            item.id === cartItem.id ? cartItem : item
+          ),
+        ],
+      });
+    }
+  };
+
   const removeCartItem = (itemid: number) => {
     setSession({
       ...session,
@@ -58,6 +75,7 @@ function App() {
           session={session}
           logout={logout}
           removeCartItem={removeCartItem}
+          saveCartItem={saveCartItem}
           plusCount={plusCount}
         />
       ) : (
