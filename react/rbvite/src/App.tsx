@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import './App.css';
 import My from './components/My';
 import Button from './components/ui/Button';
-import Login from './components/Login';
+import Login, { LoginHandler } from './components/Login';
 
 const SampleSession = {
   loginUser: { id: 1, name: 'Hong' },
@@ -34,11 +34,17 @@ function App() {
   const [count, setCount] = useState(0);
   const [session, setSession] = useState<Session>(SampleSession);
 
+  const loginRef = useRef<LoginHandler>(null);
+
   const plusCount = () => {
     setCount(count + 1);
   };
 
   const login = ({ id, name }: LoginUser) => {
+    if (!id || isNaN(id) || !name) {
+      loginRef.current?.focusInput();
+      return;
+    }
     setSession({ ...session, loginUser: { id, name } });
   };
 
@@ -79,7 +85,7 @@ function App() {
           plusCount={plusCount}
         />
       ) : (
-        <Login login={login} />
+        <Login login={login} ref={loginRef} />
       )}
 
       <div className='card'>

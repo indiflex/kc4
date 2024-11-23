@@ -1,4 +1,11 @@
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import {
+  FormEvent,
+  ForwardedRef,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import Button from './ui/Button';
 import Input from './ui/Input';
 import { LoginUser } from '../App';
@@ -7,16 +14,27 @@ type Props = {
   login: (user: LoginUser) => void;
 };
 
-export default function Login({ login }: Props) {
+export type LoginHandler = {
+  focusInput: () => void;
+};
+
+function Login({ login }: Props, ref: ForwardedRef<LoginHandler>) {
   const idRef = useRef<HTMLInputElement>(null);
-  const [name, setName] = useState('');
+  const nameRef = useRef<HTMLInputElement>(null);
+
+  const handler: LoginHandler = {
+    focusInput: () => {
+      alert('Input the id and name, plz..');
+      idRef.current?.focus();
+    },
+  };
+  useImperativeHandle(ref, () => handler);
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const id = Number(idRef.current?.value);
-    if (!id || isNaN(id) || !name) {
-      return alert('Input the id and name, plz..');
-    }
+    const name = nameRef.current?.value || '';
+
     login({ id, name });
   };
 
@@ -34,13 +52,7 @@ export default function Login({ login }: Props) {
 
         <div>
           <label htmlFor='loginId'>Name:</label>
-          <Input
-            id='loginId'
-            onChange={(e) => {
-              setName(e.currentTarget.value);
-            }}
-            value={name}
-          />
+          <Input id='loginId' ref={nameRef} />
         </div>
 
         <Button type='submit'>Sign In</Button>
@@ -48,3 +60,6 @@ export default function Login({ login }: Props) {
     </>
   );
 }
+
+const LoginImpl = forwardRef(Login);
+export default LoginImpl;

@@ -1,10 +1,12 @@
-import { FaTrashCan } from 'react-icons/fa6';
+import { FaCirclePlay, FaCircleStop, FaTrashCan } from 'react-icons/fa6';
 import { CartItem, Session } from '../App';
 import Button from './ui/Button';
 import Hello from './Hello';
-import Input from './ui/Input';
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
+import CartItemEditor from './CartItemEditor';
+import VideoPlayer, { VideoPlayerHandler } from './VideoPlayer';
+import { ImVolumeDecrease, ImVolumeIncrease } from 'react-icons/im';
 
 type Props = {
   session: Session;
@@ -23,45 +25,17 @@ export default function My({
 }: Props) {
   const { id, name } = session.loginUser || { id: 0, name: '' };
   const [isEditing, setEditing] = useState(false);
+  const [cartItem, setCartItem] = useState<CartItem | null>(null);
 
-  const idRef = useRef<HTMLInputElement>(null);
-  const itemNameRef = useRef<HTMLInputElement>(null);
-  const itemPriceRef = useRef<HTMLInputElement>(null);
+  const videoPlayerRef = useRef<VideoPlayerHandler>(null);
 
-  const addFormHandler = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const name = itemNameRef.current?.value;
-    console.log('🚀  name:', name);
-    const price = Number(itemPriceRef.current?.value);
-    console.log('🚀  price:', price);
-    if (!name || !price) {
-      return alert('Input the name & price, plz');
-    }
-
-    const id = Number(idRef.current?.value) || 0;
-    saveCartItem({ id, name, price });
-    setEditing(false);
-  };
+  const toggleEditing = () => setEditing((pre) => !pre);
 
   const setItem = (item: CartItem) => {
     console.log('🚀  item:', item);
-    setEditing(true);
-
-    if (!idRef.current || !itemNameRef.current || !itemPriceRef.current) {
-      return;
-    }
-
-    console.log('item>>', item);
-    idRef.current.value = item.id.toString();
-    itemNameRef.current.value = item.name;
-    itemPriceRef.current.value = item.price.toString();
+    toggleEditing();
+    setCartItem(item);
   };
-
-  useEffect(() => {
-    if (isEditing) {
-      itemNameRef.current?.focus();
-    }
-  }, [isEditing]);
 
   return (
     <>
@@ -90,12 +64,11 @@ export default function My({
         ))}
         <li className='grid grid-cols-3 justify-around'>
           {isEditing ? (
-            <form onSubmit={addFormHandler} className='flex gap-2'>
-              <Input type='hidden' ref={idRef} />
-              <Input ref={itemNameRef} placeholder='상품명...' />
-              <Input type='number' ref={itemPriceRef} placeholder='가격...' />
-              <Button type='submit'>Save</Button>
-            </form>
+            <CartItemEditor
+              cartItem={cartItem}
+              saveCartItem={saveCartItem}
+              toggleEditing={toggleEditing}
+            />
           ) : (
             <Button onClick={() => setEditing(true)} className='col-span-3'>
               + Add
@@ -103,6 +76,41 @@ export default function My({
           )}
         </li>
       </ul>
+
+      <div className='mx-auto w-96'>
+        <VideoPlayer
+          // url='https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4'
+          url='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4'
+          ref={videoPlayerRef}
+        />
+
+        <div className='mt-2 flex w-full justify-center gap-5'>
+          <Button
+            onClick={() => videoPlayerRef.current?.start()}
+            className='px-5 py-2'
+          >
+            <FaCirclePlay />
+          </Button>
+          <Button
+            onClick={() => videoPlayerRef.current?.stop()}
+            className='px-5 py-2'
+          >
+            <FaCircleStop />
+          </Button>
+          <Button
+            onClick={() => videoPlayerRef.current?.volumnUp(0.1)}
+            className='px-5 py-2'
+          >
+            <ImVolumeIncrease />
+          </Button>
+          <Button
+            onClick={() => videoPlayerRef.current?.volumnUp(-0.1)}
+            className='px-5 py-2'
+          >
+            <ImVolumeDecrease />
+          </Button>
+        </div>
+      </div>
     </>
   );
 }
