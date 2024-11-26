@@ -1,6 +1,5 @@
 import {
   FormEvent,
-  ForwardedRef,
   forwardRef,
   useEffect,
   useImperativeHandle,
@@ -8,17 +7,15 @@ import {
 } from 'react';
 import Button from './ui/Button';
 import Input from './ui/Input';
-import { LoginUser } from '../App';
-
-type Props = {
-  login: (user: LoginUser) => void;
-};
+import { useSession } from '../hooks/session-context';
 
 export type LoginHandler = {
   focusInput: () => void;
 };
 
-function Login({ login }: Props, ref: ForwardedRef<LoginHandler>) {
+// ref: ForwardedRef<LoginHandler>
+function LoginFn() {
+  const { login, loginRef: ref } = useSession();
   const idRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
 
@@ -61,5 +58,5 @@ function Login({ login }: Props, ref: ForwardedRef<LoginHandler>) {
   );
 }
 
-const LoginImpl = forwardRef(Login);
-export default LoginImpl;
+const Login = forwardRef(LoginFn);
+export default Login;

@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useRef } from 'react';
-import { CartItem } from '../App';
+import { CartItem } from '../hooks/session-context';
 import Input from './ui/Input';
 import Button from './ui/Button';
 
