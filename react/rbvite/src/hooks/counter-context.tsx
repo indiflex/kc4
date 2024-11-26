@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 
 type ContextProps = {
@@ -19,9 +20,16 @@ export const CounterProvider = ({ children }: PropsWithChildren) => {
   );
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useCounter = () => {
   const ctx = useContext(CounterContext);
   if (!ctx) throw new Error('CounterContext is null!!');
   return ctx;
+};
+
+export const useCount = () => {
+  const [count, setCount] = useState(0);
+  const plusCount = () => setCount((count) => count + 1);
+  const minusCount = () => setCount((count) => count - 1);
+
+  return [count, plusCount, minusCount];
 };

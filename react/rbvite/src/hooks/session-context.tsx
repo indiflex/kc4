@@ -4,10 +4,12 @@ import {
   PropsWithChildren,
   RefObject,
   useContext,
+  useEffect,
   useRef,
   useState,
 } from 'react';
 import { LoginHandler } from '../components/Login';
+import { useFetch } from './useFetch';
 
 export type LoginUser = {
   id: number;
@@ -24,15 +26,15 @@ export type Session = {
   cart: CartItem[];
 };
 
-const SampleSession: Session = {
-  loginUser: { id: 1, name: 'Hong' },
-  // loginUser: null,
-  cart: [
-    { id: 100, name: '라면', price: 3000 },
-    { id: 101, name: '컵라면', price: 2000 },
-    { id: 200, name: '파', price: 5000 },
-  ],
-};
+// const SampleSession: Session = {
+//   loginUser: { id: 1, name: 'Hong' },
+//   // loginUser: null,
+//   cart: [
+//     { id: 100, name: '라면', price: 3000 },
+//     { id: 101, name: '컵라면', price: 2000 },
+//     { id: 200, name: '파', price: 5000 },
+//   ],
+// };
 
 type ContextProps = {
   session: Session;
@@ -46,7 +48,17 @@ type ContextProps = {
 const SessionContext = createContext<ContextProps | null>(null);
 
 export const SessionProvider = ({ children }: PropsWithChildren) => {
-  const [session, setSession] = useState<Session>(SampleSession);
+  const [session, setSession] = useState<Session>({
+    loginUser: null,
+    cart: [],
+  });
+
+  const data = useFetch<Session>('/data/sample.json');
+  useEffect(() => {
+    if (data) {
+      setSession(data);
+    }
+  }, [data]);
 
   const loginRef = useRef<LoginHandler>(null);
 

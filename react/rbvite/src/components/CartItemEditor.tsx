@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useRef } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { CartItem } from '../hooks/session-context';
 import Input from './ui/Input';
 import Button from './ui/Button';
@@ -17,6 +17,16 @@ export default function CartItemEditor({
   const idRef = useRef<HTMLInputElement>(null);
   const itemNameRef = useRef<HTMLInputElement>(null);
   const itemPriceRef = useRef<HTMLInputElement>(null);
+
+  const [hasDirty, setDirty] = useState(false);
+
+  const checkDirty = () => {
+    console.log('xx=', itemPriceRef.current?.value, cartItem?.price);
+    setDirty(
+      itemNameRef.current?.value !== cartItem?.name ||
+        itemPriceRef.current?.value != cartItem?.price
+    );
+  };
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,9 +65,25 @@ export default function CartItemEditor({
     <>
       <form onSubmit={submitHandler} className='flex gap-2'>
         <Input type='hidden' ref={idRef} />
-        <Input ref={itemNameRef} placeholder='상품명...' />
-        <Input type='number' ref={itemPriceRef} placeholder='가격...' />
-        <Button type='submit'>Save</Button>
+        <Input
+          ref={itemNameRef}
+          onChange={checkDirty}
+          placeholder='상품명...'
+        />
+        <Input
+          type='number'
+          onChange={checkDirty}
+          ref={itemPriceRef}
+          placeholder='가격...'
+        />
+        {hasDirty && (
+          <div className='flex gap-3'>
+            <Button type='reset' onClick={toggleEditing}>
+              Cancel
+            </Button>
+            <Button type='submit'>Save</Button>
+          </div>
+        )}
       </form>
     </>
   );
