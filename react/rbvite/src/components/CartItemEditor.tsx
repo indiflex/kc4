@@ -14,6 +14,7 @@ export default function CartItemEditor({
   saveCartItem,
   toggleEditing,
 }: Props) {
+  console.log('🚀  cartItem:', cartItem);
   const idRef = useRef<HTMLInputElement>(null);
   const itemNameRef = useRef<HTMLInputElement>(null);
   const itemPriceRef = useRef<HTMLInputElement>(null);
@@ -39,6 +40,7 @@ export default function CartItemEditor({
     }
 
     const id = Number(idRef.current?.value) || 0;
+    console.log('🚀  id:', id, idRef.current?.value);
     saveCartItem({ id, name, price });
     toggleEditing();
   };
@@ -64,7 +66,7 @@ export default function CartItemEditor({
   return (
     <>
       <form onSubmit={submitHandler} className='flex gap-2'>
-        <Input type='hidden' ref={idRef} />
+        <Input type='hidden' value={cartItem?.id} ref={idRef} />
         <Input
           ref={itemNameRef}
           onChange={checkDirty}

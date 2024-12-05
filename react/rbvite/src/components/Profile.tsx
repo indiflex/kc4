@@ -19,7 +19,10 @@ export default function Profile() {
 
   const videoPlayerRef = useRef<VideoPlayerHandler>(null);
 
-  const toggleEditing = () => setEditing((pre) => !pre);
+  const toggleEditing = () => {
+    setEditing((pre) => !pre);
+    setCartItem(null);
+  };
 
   const setItem = (item: CartItem) => {
     console.log('🚀  item:', item);
